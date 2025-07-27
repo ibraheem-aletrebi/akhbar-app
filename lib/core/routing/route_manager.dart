@@ -14,6 +14,7 @@ import 'package:akhbar_app/Features/search/presentation/view/search_view.dart';
 import 'package:akhbar_app/Features/search/presentation/view/search_view_result.dart';
 import 'package:akhbar_app/Features/splash/presentation/view/splash_view.dart';
 import 'package:akhbar_app/core/routing/routes.dart';
+import 'package:akhbar_app/core/utils/service_locator.dart';
 import 'package:akhbar_app/core/utils/services/api/api_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,8 +50,8 @@ class RouteManager {
             ),
             BlocProvider(
               create: (context) =>
-                  NewsCubit(HomeRepoImp(ApiHelper(dio: Dio())))
-                    ..fetchNews(null),
+                  NewsCubit(getIt.get<HomeRepoImp>())
+                    ..fetchNews(),
             ),
           ],
           child: const HomeView(),
@@ -62,7 +63,7 @@ class RouteManager {
         name: Routes.kCategoryView,
         builder: (context, state) => BlocProvider(
           create: (context) =>
-              CategoryNewsCubit(HomeRepoImp(ApiHelper(dio: Dio())))
+              CategoryNewsCubit(getIt.get<HomeRepoImp>())
                 ..fetchCategoryNews(category: state.extra as String),
           child: CategoryView(category: state.extra as String),
         ),
@@ -79,7 +80,7 @@ class RouteManager {
         name: Routes.kSearchResultView,
         builder: (context, state) => BlocProvider(
           create: (context) =>
-              SearchCubit(SearchRepoImpl(apiHelper: ApiHelper(dio: Dio()))),
+              SearchCubit(getIt.get<SearchRepoImpl>()),
           child: SearchViewResult(query: state.extra as String),
         ),
       ),

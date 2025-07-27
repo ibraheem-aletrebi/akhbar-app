@@ -10,7 +10,7 @@ class NewsCubit extends Cubit<NewsState> {
 
   final HomeRepo homeRepo;
 
-  fetchNews(String? category) async {
+  fetchNews() async {
     emit(NewsLoadingState());
     var data = await homeRepo.fetchGeneralNews();
 
